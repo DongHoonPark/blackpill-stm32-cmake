@@ -14,3 +14,4 @@ Hands on black pill board : STM32F401
 - Programmer : STM32CubeProgrammer
 - Debugger : STLink-GDB or OpenOCD
 
+※ All tools have to be under environment variable locations 
