@@ -1,0 +1,7 @@
+build/*
+Core/*
+Drivers/*
+.cproject
+.mxproject
+.project
+*.ld
