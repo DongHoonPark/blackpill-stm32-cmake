@@ -17,7 +17,7 @@ message("Build type: "              ${CMAKE_BUILD_TYPE})
 project("BlackPill")
 enable_language(C CXX ASM)
 
-set(OPENOCD_PRINT TRUE)
+set(OPENOCD_SEMIHOST TRUE)
 
 #
 # Core MCU flags, CPU, instruction set and FPU setup
@@ -42,9 +42,7 @@ FILE(GLOB_RECURSE CORE_SRC       ${PROJ_PATH}/Core/Src/*.c)
 FILE(GLOB_RECURSE CORE_STARTUP   ${PROJ_PATH}/Core/Startup/*.s)
 FILE(GLOB_RECURSE DRIVER_HAL_SRC ${PROJ_PATH}/Drivers/*HAL_Driver/*.c)
 
-IF(${OPENOCD_PRINT})
-    LIST(REMOVE_ITEM CORE_SRC ${PROJ_PATH}/Core/Src/syscalls.c)
-ENDIF()
+
 
 set(sources_SRCS
     # Put here your source files, one in each line, relative to CMakeLists.txt file location
@@ -83,6 +81,14 @@ set(symbols_SYMB
     "USE_HAL_DRIVER"
 )
 
+IF(${OPENOCD_SEMIHOST})
+    LIST(REMOVE_ITEM sources_SRCS ${PROJ_PATH}/Core/Src/syscalls.c)
+    SET(LINKER_SPECS "--specs=rdimon.specs" "-lrdimon")
+    LIST(APPEND symbols_SYMB "SEMIHOST")
+ELSE()
+    SET(LINKER_SPECS "--specs=nosys.specs")
+ENDIF()
+
 # Executable files
 add_executable(${EXECUTABLE} ${sources_SRCS})
 
@@ -108,9 +114,7 @@ target_link_options(${EXECUTABLE} PRIVATE
     -T${linker_script_SRC}
     ${CPU_PARAMETERS}
     -Wl,-Map=${CMAKE_PROJECT_NAME}.map
-    # --specs=nosys.specs
-    --specs=rdimon.specs
-    -lrdimon
+    ${LINKER_SPECS}
     -u _printf_float                # STDIO float formatting support
     -Wl,--start-group
     -lc
