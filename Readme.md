@@ -11,7 +11,6 @@ Hands on black pill board : STM32F401
 - Build tool : CMake, Ninja
 - Editor : Visual Studio Code (Recommended)
 - Compiler : ARM-GCC
-- Programmer : STM32CubeProgrammer
-- Debugger : STLink-GDB or OpenOCD
+- Debugger : OpenOCD or STLink-GDB
 
 ※ All tools have to be under environment variable locations 

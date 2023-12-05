@@ -15,16 +15,15 @@
             "interface": "swd",
             "serialNumber": "",                 //Set ST-Link ID if you use multiple at the same time
             "runToEntryPoint": "main",
-            "svdFile": "${workspaceFolder}/stm32f401.svd",      //Path to SVD file to see registers
             "v1": false,
             "showDevDebugOutput": "both",
             "configFiles": [
-                "${workspaceFolder}/openocd/interface/stlink.cfg",
-                "${workspaceFolder}/openocd/target/stm32f4x.cfg"
+                "interface/stlink.cfg",
+                "target/stm32f4x.cfg"
             ],
             "postLaunchCommands": [
                 "monitor arm semihosting enable",
-            ]
+            ],
         },
         {
             "name": "Debug Microcontroller - STLink",
