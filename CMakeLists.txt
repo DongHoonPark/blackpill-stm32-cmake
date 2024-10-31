@@ -8,7 +8,13 @@ project(${PROJ_NAME} CXX C ASM)
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 
 set(TARGET_NAME ${PROJ_NAME})
-add_executable(${TARGET_NAME} main.cpp)
+
+add_executable(${TARGET_NAME} main.c bsp/blackpill/blackpill.c)
+
+target_include_directories(
+    ${TARGET_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/bsp
+)
 
 stm32_fetch_cmsis(F4)
 stm32_fetch_hal(F4)

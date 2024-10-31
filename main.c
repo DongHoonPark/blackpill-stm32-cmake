@@ -1,14 +1,11 @@
-#include "bsp/blackpill.h"
+#include "blackpill/blackpill.h"
 
-extern "C"
-{
 #include <stdio.h>
 #include <stdbool.h>
 
 void SysTick_Handler(void)
 {
     HAL_IncTick();
-}
 }
 
 int main(void)
