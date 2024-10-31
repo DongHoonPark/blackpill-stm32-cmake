@@ -8,7 +8,7 @@ project(${PROJ_NAME} CXX C ASM)
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 
 set(TARGET_NAME ${PROJ_NAME})
-add_executable(${TARGET_NAME} main.c)
+add_executable(${TARGET_NAME} main.cpp)
 
 stm32_fetch_cmsis(F4)
 stm32_fetch_hal(F4)
@@ -20,7 +20,9 @@ target_link_libraries(
     ${TARGET_NAME} 
     STM32::NoSys 
     CMSIS::STM32::F401CC
+    HAL::STM32::F4::CORTEX
     HAL::STM32::F4::RCC
+    HAL::STM32::F4::PWR
     HAL::STM32::F4::GPIO
     HAL::STM32::F4::ADC
     HAL::STM32::F4::TIM

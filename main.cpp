@@ -1,23 +1,26 @@
+#include "bsp/blackpill.h"
+
+extern "C"
+{
 #include <stdio.h>
 #include <stdbool.h>
-#include "stm32f4xx_hal.h"
 
 void SysTick_Handler(void)
 {
     HAL_IncTick();
 }
+}
 
 int main(void)
 {
-    SystemCoreClockUpdate();
-    SysTick_Config(SystemCoreClock / 1000);
-
+    SystemClock_Config();
+    
     GPIO_InitTypeDef led_gpio_init = {
-        .Alternate = 0,
-        .Mode  = GPIO_MODE_OUTPUT_PP,
         .Pin   = GPIO_PIN_13,
+        .Mode  = GPIO_MODE_OUTPUT_PP,
         .Pull  = GPIO_NOPULL,
         .Speed = GPIO_SPEED_FREQ_LOW,
+        .Alternate = GPIO_MODE_AF_PP,
     };
 
     __HAL_RCC_GPIOC_CLK_ENABLE();
