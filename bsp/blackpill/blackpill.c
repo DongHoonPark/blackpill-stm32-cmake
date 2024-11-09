@@ -63,16 +63,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  // Enable GPIOA clock
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-
-  // Configure GPIOA Pin 15 as Chip Select (Output Push Pull mode)
-  GPIO_InitStruct.Pin = GPIO_PIN_15;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
   // Enable GPIOB clock
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
@@ -92,6 +82,7 @@ static void MX_GPIO_Init(void)
 
 static void MX_SPI1_Init(void)
 {
+  __HAL_RCC_SPI1_CLK_ENABLE();
   // SPI1 initialization settings
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;  // Set SPI1 as master
@@ -99,12 +90,13 @@ static void MX_SPI1_Init(void)
   hspi1.Init.DataSize = SPI_DATASIZE_8BIT;  // Set data frame size to 8 bits
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;  // Clock polarity low when idle
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;  // First clock transition is the first data capture edge
-  hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;  // Hardware chip select management
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;  // Set baud rate prescaler to 16
+  hspi1.Init.NSS = SPI_NSS_SOFT;  // Hardware chip select management
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;  // Set baud rate prescaler to 16
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;  // Data is transmitted MSB first
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;  // Disable TI mode
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;  // Disable CRC calculation
   hspi1.Init.CRCPolynomial = 10;  // CRC polynomial value
+  
   if (HAL_SPI_Init(&hspi1) != HAL_OK)
   {
     // Initialization error handling
@@ -124,6 +116,17 @@ static void MX_SPI1_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  // Enable GPIOA clock
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  // Configure NSS pin (PA4) as Alternate Function Push Pull
+  GPIO_InitStruct.Pin = GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  
 }
 
 void Error_Handler(void)
